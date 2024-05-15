@@ -38,8 +38,8 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<String?> signUp(
-      String email, String password, String firstName, String lastName) async {
+  Future<String?> signUp(String email, String password, String firstName,
+      String lastName, bool isOrganization) async {
     UserCredential credential;
     try {
       credential = await auth.createUserWithEmailAndPassword(
@@ -57,6 +57,7 @@ class FirebaseAuthAPI {
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
+        'isOrganization': isOrganization,
       });
 
       return null;

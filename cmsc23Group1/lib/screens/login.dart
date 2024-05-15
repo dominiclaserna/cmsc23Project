@@ -122,7 +122,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         },
-        child: const Text('Sign Up', style: TextStyle(color: Colors.black)),
+        child: const Text('Sign Up as Donor',
+            style: TextStyle(color: Colors.black)),
       ),
     );
 

@@ -24,10 +24,10 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  Future<String?> signUp(
-      String email, String password, String firstName, String lastName) async {
-    String? authHandle =
-        await authService.signUp(email, password, firstName, lastName);
+  Future<String?> signUp(String email, String password, String firstName,
+      String lastName, bool isOrganization) async {
+    String? authHandle = await authService.signUp(
+        email, password, firstName, lastName, isOrganization);
     notifyListeners();
     return authHandle;
   }

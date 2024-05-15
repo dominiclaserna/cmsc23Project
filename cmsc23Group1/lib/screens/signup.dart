@@ -112,7 +112,8 @@ class _SignupPageState extends State<SignupPage> {
                         emailController.text,
                         passwordController.text,
                         firstController.text,
-                        lastController.text);
+                        lastController.text,
+                        true);
 
                     if (result != null) {
                       switch (result) {
