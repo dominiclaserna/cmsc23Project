@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "514423062513",
+    "project_id": "cmsc23-todo-app-lblaserna",
+    "storage_bucket": "cmsc23-todo-app-lblaserna.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514423062513:android:1eacce5c9c291e15508e50",
+        "android_client_info": {
+          "package_name": "com.example.week7_networking_discussion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVy8QVTJk2RrokvZe4p7dic-lmzGFri-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514423062513:android:06744bc969b401e1508e50",
+        "android_client_info": {
+          "package_name": "com.example.week9"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVy8QVTJk2RrokvZe4p7dic-lmzGFri-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
