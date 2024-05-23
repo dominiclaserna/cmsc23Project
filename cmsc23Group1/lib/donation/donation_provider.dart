@@ -23,8 +23,13 @@ class DonationFormProvider with ChangeNotifier {
   
   final List<String> _selectedCategories = [];
 
+  String categoryErrorMessage = "";
+  String pickupErrorMessage = "";
+
+
   Donation get donationFormData => _donationFormData;
   List<String> get selectedCategories => _selectedCategories;
+  bool? get isForPickup => _donationFormData.isForPickup;
 
 
   void updateCategory(String category, bool isSelected) {
@@ -34,15 +39,15 @@ class DonationFormProvider with ChangeNotifier {
       _selectedCategories.remove(category);
     }
 
-    print(_selectedCategories);
-
+    _donationFormData.category = _selectedCategories;
+    print(_donationFormData.category);
     notifyListeners();
   }
 
   void updateIsForPickup(bool isForPickup) {
-    print(isForPickup);
 
     _donationFormData.isForPickup = isForPickup;
+    print("Pickup: ${_donationFormData.isForPickup}");
     notifyListeners();
   }
 

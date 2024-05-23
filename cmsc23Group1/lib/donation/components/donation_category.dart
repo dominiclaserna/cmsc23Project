@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week9/donation/donation_provider.dart';
+import 'package:week9/donation/donation_utility.dart';
 
 
 
@@ -18,19 +19,29 @@ static const List<String> categories = ["Food", "Clothes", "Cash", "Necessities"
   Widget build(BuildContext context) {
     final parentProvider = Provider.of<DonationFormProvider>(context);
 
-    return  ListView.builder(
-      shrinkWrap: true,
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final category = categories[index];
-        return CheckboxListTile(
-          title: Text(category),
-          value: parentProvider.selectedCategories.contains(category),
-          onChanged: (bool? value) {
-            parentProvider.updateCategory(category, value ?? false);
+    return Column(
+      children: [
+        const Text("Please select the category(s) for your donation:"),
+        if (parentProvider.categoryErrorMessage.isNotEmpty) 
+          Text(
+            parentProvider.categoryErrorMessage,
+            style: DonationUtils.errorMessageStyle
+          ),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            final category = categories[index];
+            return CheckboxListTile(
+              title: Text(category),
+              value: parentProvider.selectedCategories.contains(category),
+              onChanged: (bool? value) {
+                parentProvider.updateCategory(category, value ?? false);
+              }
+            );
           }
-        );
-      }
+        )
+      ],
     );
   }
 }
