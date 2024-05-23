@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:week9/models/donation_model.dart';
+import 'package:week9/donation/donation_model.dart';
 
 const List<Map<String, dynamic>> donationSampleData = [
     {
