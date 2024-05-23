@@ -22,7 +22,7 @@ class _DonationFormState extends State<DonationForm> {
       child: Column(
         children: [
           CategoryCheckbox(),
-          IsForPickupSwitch()
+          IsForPickupRadio()
         ]
       )
     );

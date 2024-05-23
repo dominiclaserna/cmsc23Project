@@ -24,7 +24,7 @@ class DonationFormProvider with ChangeNotifier {
   final List<String> _selectedCategories = [];
 
   String categoryErrorMessage = "";
-  String pickupErrorMessage = "";
+  String pickupErrorMessage = "dasds";
 
 
   Donation get donationFormData => _donationFormData;

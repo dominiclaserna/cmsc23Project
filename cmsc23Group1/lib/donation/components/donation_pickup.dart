@@ -5,18 +5,38 @@ import 'package:week9/donation/donation_utility.dart';
 
 
 
-class IsForPickupSwitch extends StatefulWidget {
-  const IsForPickupSwitch({super.key});
+class IsForPickupRadio extends StatefulWidget {
+  const IsForPickupRadio({super.key});
 
   @override
-  State<IsForPickupSwitch> createState() => _IsForPickupSwitchState();
+  State<IsForPickupRadio> createState() => _IsForPickupRadioState();
 }
 
-class _IsForPickupSwitchState extends State<IsForPickupSwitch> {
+class _IsForPickupRadioState extends State<IsForPickupRadio> {
 
   @override
   Widget build(BuildContext context) {
     final parentProvider = Provider.of<DonationFormProvider>(context);
+  
+  Widget createPickupRadio(String text) {
+    bool radioValue = (text == "Is For Pickup") ? true : false;
+
+    void highlightRadio() {
+      setState( () {
+        
+      });
+    }
+
+    return RadioListTile(
+        title: Text(text),
+        value: text,
+        groupValue: parentProvider.isForPickup,
+        onChanged: (value) {
+          parentProvider.updateIsForPickup(radioValue);
+          highlightRadio();
+        },
+      );
+  }
 
     return Column(
       children: [
@@ -25,19 +45,13 @@ class _IsForPickupSwitchState extends State<IsForPickupSwitch> {
             parentProvider.pickupErrorMessage,
             style: DonationUtils.errorMessageStyle
           ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("Please indicate if it is for drop off:"),
-            Switch(
-              value: parentProvider.isForPickup ?? false,
-              activeColor: Colors.green,
-              onChanged: (bool? value) {
-                parentProvider.updateIsForPickup(value ?? false);
-              },
-            )
-          ],
-        )
+        const Text("Please indicate if it is for drop off:"),
+          Column(
+            children: [
+              createPickupRadio("Is For Pickup"),
+              createPickupRadio("Drop-off")
+            ],
+          ),
       ],
     );
   }
