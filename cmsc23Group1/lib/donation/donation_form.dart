@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week9/donation/components/donation_category.dart';
+import 'package:week9/donation/components/donation_weight.dart';
 import 'package:week9/donation/donation_provider.dart';
 import 'package:week9/donation/components/donation_pickup.dart';
 
@@ -22,7 +23,8 @@ class _DonationFormState extends State<DonationForm> {
       child: Column(
         children: [
           CategoryCheckbox(),
-          IsForPickupRadio()
+          IsForPickupRadio(),
+          WeightTextField()
         ]
       )
     );

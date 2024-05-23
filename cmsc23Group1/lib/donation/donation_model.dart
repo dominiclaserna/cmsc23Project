@@ -7,7 +7,7 @@ class Donation {
   String? id;
   List<String>? category;
   bool? isForPickup;
-  Double? weight;
+  double? weight;
   String? imageUrl;
   DateTime? pickupDropoffTime;
   List<String>? addressesForPickup;

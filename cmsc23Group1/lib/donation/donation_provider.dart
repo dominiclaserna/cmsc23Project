@@ -24,7 +24,9 @@ class DonationFormProvider with ChangeNotifier {
   final List<String> _selectedCategories = [];
 
   String categoryErrorMessage = "";
-  String pickupErrorMessage = "dasds";
+  String pickupErrorMessage = "";
+  String weightErrorMessage = "";
+
 
 
   Donation get donationFormData => _donationFormData;
@@ -51,10 +53,10 @@ class DonationFormProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateWeight(Double weight) {
-    print(weight);
-
+  void updateWeight(double weight) {
     _donationFormData.weight = weight;
+
+    print("Weight: ${_donationFormData.weight}");
     notifyListeners();
   }
 
