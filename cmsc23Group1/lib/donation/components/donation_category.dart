@@ -1,88 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:week9/donation/donation_provider.dart';
 
-class Motto extends FormField<String> {
-  final ValueChanged<String> onSubmit;
-  void reset() {
 
-  }
 
-  Motto({
-    super.key,
-    required this.onSubmit,
-  }) : super(
-          onSaved: (value) {
-            print('Saved value: $value');
-          },
-          validator: (value) {
-            if (value == null) {
-              print("Motto validator failure.");
-              return 'Motto validator failure.';
-            } else {
-              print("Motto validator success.");
-              onSubmit(value);
-              return null;
-            }
-          },
-          builder: (FormFieldState<String> field) {
-            return RadioGroup(
-              onChanged: (value) {
-                field.didChange(value);
-              },
-            );
-          },
-        );
-  }
-
-class RadioGroup extends StatefulWidget {
-  final ValueChanged<String>? onChanged;
-  final ValueChanged<String>? onReset;
-  const RadioGroup({super.key, this.onChanged, this.onReset});
+class CategoryCheckbox extends StatefulWidget {
+  const CategoryCheckbox({super.key});
 
   @override
-  State<RadioGroup> createState() => _RadioGroupState();
+  State<CategoryCheckbox> createState() => _CategoryCheckboxState();
 }
 
-class _RadioGroupState extends State<RadioGroup> {
-  String? inputValue = "Default";
-
-  static final Map<String, bool> mottoList = {
-    "Haters gonna hate": true,
-    "Bakers gonna Bake": false,
-    "If cannot be, borrow one from three": false,
-    "Less is more, more or less": false,
-    "Better late than sorry": false,
-    "Don't talk to strangers when your mouth is full": false,
-    "Let's burn the bridge when we get there": false
-  };
-
-
-  late String _selectedValue;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectedValue = "Haters gonna hate";
-  }
+class _CategoryCheckboxState extends State<CategoryCheckbox> {
+static const List<String> categories = ["Food", "Clothes", "Cash", "Necessities", "Others"];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: mottoList.keys.map((option) {
-        return RadioListTile(
-          title: Text(option),
-          value: option,
-          groupValue: _selectedValue,
-          onChanged: (value) {
-            setState(() {
-              _selectedValue = value.toString();
-              widget.onChanged?.call(_selectedValue);
-            });
-            // print("Changed radio to $_selectedValue.");
-          },
+    final parentProvider = Provider.of<DonationFormProvider>(context);
+
+    return  ListView.builder(
+      shrinkWrap: true,
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        return CheckboxListTile(
+          title: Text(category),
+          value: parentProvider.selectedCategories.contains(category),
+          onChanged: (bool? value) {
+            parentProvider.updateCategory(category, value ?? false);
+          }
         );
-      }).toList(),
+      }
     );
   }
 }

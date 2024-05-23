@@ -1,0 +1,88 @@
+// lib/providers/form_provider.dart
+// ignore_for_file: avoid_print
+
+import 'dart:ffi';
+
+import 'package:flutter/material.dart';
+import 'package:week9/donation/firebase_donation_api.dart';
+import './donation_model.dart';
+
+  // String? id;
+  // List<String>? category;
+  // bool? isForPickup;
+  // Double? weight;
+  // String? imageUrl;
+  // DateTime? pickupDropoffTime;
+  // List<String>? addressesForPickup;
+  // String? contactNumber;
+  // String? qrCode;
+  // String? status;
+
+class DonationFormProvider with ChangeNotifier {
+  Donation _donationFormData = Donation.emptyDonation();
+  
+  final List<String> _selectedCategories = [];
+
+  Donation get donationFormData => _donationFormData;
+  List<String> get selectedCategories => _selectedCategories;
+
+
+  void updateCategory(String category, bool isSelected) {
+    if(isSelected) {
+      _selectedCategories.add(category);
+    } else {
+      _selectedCategories.remove(category);
+    }
+
+    print(_selectedCategories);
+
+    notifyListeners();
+  }
+
+  void updateIsForPickup(bool isForPickup) {
+    print(isForPickup);
+
+    _donationFormData.isForPickup = isForPickup;
+    notifyListeners();
+  }
+
+  void updateWeight(Double weight) {
+    print(weight);
+
+    _donationFormData.weight = weight;
+    notifyListeners();
+  }
+
+  void updateContactNumber(String contactNumber) {
+    print(contactNumber);
+
+    _donationFormData.contactNumber = contactNumber;
+    notifyListeners();
+  }
+
+  void updatePickupDropOffTime(DateTime pickupDropoffTime) {
+    print(pickupDropoffTime);
+
+    _donationFormData.pickupDropoffTime = pickupDropoffTime;
+    notifyListeners();
+  }
+
+  void updateStatus(String status) {
+    print(status);
+
+    _donationFormData.status = status;
+    notifyListeners();
+  }
+
+  // Add other update methods as needed
+
+  void resetForm() {
+    print("Resetting the form data for donations.");
+    _donationFormData = Donation.emptyDonation();
+    notifyListeners();
+  }
+
+  Future<void> submitForm() async {
+    // Call your API or service to submit the form
+  }
+}

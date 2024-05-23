@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:week9/donation/components/donation_category.dart';
+import 'package:week9/donation/donation_provider.dart';
 
 class DonationForm extends StatefulWidget {
   const DonationForm({super.key});
@@ -9,19 +12,16 @@ class DonationForm extends StatefulWidget {
 
 class _DonationFormState extends State<DonationForm> {
 
-  GlobalKey<FormState> donationFormKey = GlobalKey<FormState>();
-
-
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: donationFormKey,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            
-          ],
-        )
+  final donationFormProvider = Provider.of<DonationFormProvider>(context);
+
+
+    return const SingleChildScrollView(
+      child: Column(
+        children: [
+          CategoryCheckbox()
+        ]
       )
     );
   }

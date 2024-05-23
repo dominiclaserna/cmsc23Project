@@ -5,15 +5,15 @@ import 'dart:ffi';
 
 class Donation {
   String? id;
-  List<String> category;
-  bool isForPickup;
-  Double weight;
+  List<String>? category;
+  bool? isForPickup;
+  Double? weight;
   String? imageUrl;
-  DateTime pickupDropoffTime;
+  DateTime? pickupDropoffTime;
   List<String>? addressesForPickup;
-  String contactNumber;
+  String? contactNumber;
   String? qrCode;
-  String status;
+  String? status;
 
   Donation({
     this.id,
@@ -27,6 +27,18 @@ class Donation {
     required this.status,
     this.qrCode
   });
+
+  Donation.emptyDonation() {
+    category = null;
+    category = null;
+    isForPickup = null;
+    weight = null;
+    imageUrl = null;
+    addressesForPickup = null;
+    contactNumber = null;
+    pickupDropoffTime = null;
+    status = null;
+  }
 
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
