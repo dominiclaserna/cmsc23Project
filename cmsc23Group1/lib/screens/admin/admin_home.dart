@@ -1,11 +1,12 @@
+// admin_home_page.dart
 import 'package:flutter/material.dart';
 
-class OrgHomePage extends StatelessWidget {
+class AdminHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Organization’s View'),
+        title: Text('Admin Home Page'),
       ),
       body: Center(
         child: Column(
@@ -13,21 +14,21 @@ class OrgHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/donation');
+                // Navigate to view all organizations and donations
               },
-              child: Text('List of Donations'),
+              child: Text('View All Organizations and Donations'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/donationDrive');
+                // Navigate to approve an organization sign up
               },
-              child: Text('Donation Drives'),
+              child: Text('Approve Organization Sign Up'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/org_profile');
+                // Navigate to view all donors
               },
-              child: Text('Profile'),
+              child: Text('View All Donors'),
             ),
           ],
         ),

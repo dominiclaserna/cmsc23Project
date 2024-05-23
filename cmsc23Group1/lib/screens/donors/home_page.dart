@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/profile');
+                Navigator.pushNamed(context, '/donor_profile');
               },
               child: Text('Profile'),
             ),
