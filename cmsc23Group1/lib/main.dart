@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'screens/donors/home_page.dart';
 import '../providers/todo_provider.dart';
 import '../providers/auth_provider.dart';
 import '../screens/todo_page.dart';
@@ -7,7 +8,8 @@ import '../screens/user_details.dart';
 import '../screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
+import 'screens/donors/donate_page.dart';
+import '../screens/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,11 +41,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/': (context) => const TodoPage(),
+        '/': (context) => HomePage(),
         '/login': (context) => const LoginPage(),
         '/todo': (context) => const LoginPage(),
         '/user_details': (context) => const UserDetailsPage(),
-        
+        '/donate': (context) => DonatePage(),
+        '/profile': (context) => ProfilePage(),
       },
     );
   }
