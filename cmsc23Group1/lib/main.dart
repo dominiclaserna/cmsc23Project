@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week9/screens/org/org_home_page.dart';
 import 'package:week9/screens/org/org_profile_page.dart';
+import 'package:week9/themedata.dart';
 import 'screens/admin/admin_home.dart';
 import 'screens/donors/home_page.dart';
 import '../providers/todo_provider.dart';
@@ -40,9 +41,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Todo with Auth',
       initialRoute: '/',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: appTheme,
       routes: {
         '/': (context) => UserSelectionPage(),
         '/login': (context) => const LoginPage(),
