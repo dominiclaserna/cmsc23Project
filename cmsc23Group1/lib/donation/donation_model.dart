@@ -3,13 +3,15 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:flutter/material.dart';
+
 class Donation {
   String? id;
   List<String>? category;
   bool? isForPickup;
   double? weight;
   String? imageUrl;
-  DateTime? pickupDropoffTime;
+  TimeOfDay? pickupDropoffTime;
   List<String>? addressesForPickup;
   String? contactNumber;
   String? qrCode;

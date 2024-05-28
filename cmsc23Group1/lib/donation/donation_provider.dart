@@ -26,12 +26,17 @@ class DonationFormProvider with ChangeNotifier {
   String categoryErrorMessage = "";
   String pickupErrorMessage = "";
   String weightErrorMessage = "";
+  String pickDropTimeErrorMessage = "";
+  String addressErrorMessage = "";
+  String contactNumErrorMessage = "";
 
 
 
   Donation get donationFormData => _donationFormData;
   List<String> get selectedCategories => _selectedCategories;
   bool? get isForPickup => _donationFormData.isForPickup;
+  double? get weight => _donationFormData.weight;
+  TimeOfDay? get pickUpDropoffTime => _donationFormData.pickupDropoffTime;
 
 
   void updateCategory(String category, bool isSelected) {
@@ -67,10 +72,10 @@ class DonationFormProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePickupDropOffTime(DateTime pickupDropoffTime) {
-    print(pickupDropoffTime);
-
+  void updatePickupDropOffTime(TimeOfDay pickupDropoffTime) {
     _donationFormData.pickupDropoffTime = pickupDropoffTime;
+
+    print("time: ${_donationFormData.pickupDropoffTime.toString()}");
     notifyListeners();
   }
 
