@@ -39,6 +39,7 @@ class FirebaseAuthAPI {
     String userType,
     String? orgName,
     String? proofs,
+    bool isOrganization,
   ) async {
     UserCredential credential;
     try {
@@ -61,12 +62,16 @@ class FirebaseAuthAPI {
         'contactNumber': contactNumber,
         'addresses': addresses,
         'userType': userType,
+        'isOrganization': isOrganization,
       };
       if (userType == 'organization') {
         userData['orgName'] = orgName;
         userData['proofs'] = proofs;
       }
-      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set(userData);
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .set(userData);
 
       return null;
     } on FirebaseAuthException catch (e) {

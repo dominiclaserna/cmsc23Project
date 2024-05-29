@@ -35,6 +35,7 @@ class AuthProvider with ChangeNotifier {
     String userType,
     String? orgName,
     String? proofs,
+    bool isOrganization,
   ) async {
     String? authHandle = await authService.signUp(
       email,
@@ -47,6 +48,7 @@ class AuthProvider with ChangeNotifier {
       userType,
       orgName,
       proofs,
+      isOrganization,
     );
     notifyListeners();
     return authHandle;

@@ -209,20 +209,23 @@ class _SignupPageState extends State<SignupPage> {
                       _emailErrorText = null;
                       _passwordErrorText = null;
                     });
+                    bool isOrganization = false;
 
                     List<String> addresses = [addressController.text.trim()];
 
                     String? result = await context.read<AuthProvider>().signUp(
-                        emailController.text,
-                        passwordController.text,
-                        firstNameController.text,
-                        lastNameController.text,
-                        usernameController.text,
-                        contactNumberController.text,
-                        addresses,
-                        _userType,
-                        orgNameController.text,
-                        proofsController.text);
+                          emailController.text,
+                          passwordController.text,
+                          firstNameController.text,
+                          lastNameController.text,
+                          usernameController.text,
+                          contactNumberController.text,
+                          addresses,
+                          _userType,
+                          orgNameController.text,
+                          proofsController.text,
+                          false,
+                        );
 
                     if (result != null) {
                       switch (result) {
