@@ -40,12 +40,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo with Auth',
-      initialRoute: '/',
+      initialRoute: '/login',
       theme: appTheme,
       routes: {
-        '/': (context) => UserSelectionPage(),
         '/login': (context) => const LoginPage(),
-        '/todo': (context) => const LoginPage(),
+        '/todo': (context) => const TodoPage(),
         '/user_details': (context) => const UserDetailsPage(),
         '/donate': (context) => DonatePage(),
         '/donor_home': (context) => HomePage(),
@@ -54,42 +53,6 @@ class MyApp extends StatelessWidget {
         '/organization_home': (context) => OrgHomePage(),
         '/admin_home': (context) => AdminHomePage(),
       },
-    );
-  }
-}
-
-class UserSelectionPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Select User Type'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/admin_home');
-              },
-              child: Text('Admin'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/donor_home');
-              },
-              child: Text('Donor'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/organization_home');
-              },
-              child: Text('Organization'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

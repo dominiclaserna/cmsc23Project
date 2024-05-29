@@ -14,11 +14,17 @@ class _SignupPageState extends State<SignupPage> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController firstController = TextEditingController();
-  TextEditingController lastController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController contactNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController orgNameController = TextEditingController();
+  TextEditingController proofsController = TextEditingController();
 
   String? _passwordErrorText;
   String? _emailErrorText;
+  String _userType = 'donor';
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,9 @@ class _SignupPageState extends State<SignupPage> {
                 style: TextStyle(fontSize: 25),
               ),
               TextFormField(
-                controller: firstController,
+                controller: firstNameController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
                 decoration: const InputDecoration(
                   hintText: "First Name",
                 ),
@@ -49,7 +57,9 @@ class _SignupPageState extends State<SignupPage> {
                 },
               ),
               TextFormField(
-                controller: lastController,
+                controller: lastNameController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
                 decoration: const InputDecoration(
                   hintText: "Last Name",
                 ),
@@ -61,7 +71,23 @@ class _SignupPageState extends State<SignupPage> {
                 },
               ),
               TextFormField(
+                controller: usernameController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
+                decoration: const InputDecoration(
+                  hintText: "Username",
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a username.";
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
                 controller: emailController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
                 decoration: InputDecoration(
                   hintText: "Email",
                   errorText: _emailErrorText,
@@ -70,7 +96,6 @@ class _SignupPageState extends State<SignupPage> {
                   if (value == null || value.isEmpty) {
                     return "Please enter email.";
                   }
-                  // Validate email format
                   if (!RegExp(
                           r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
                       .hasMatch(value)) {
@@ -82,6 +107,8 @@ class _SignupPageState extends State<SignupPage> {
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
                 decoration: InputDecoration(
                   hintText: "Password",
                   errorText: _passwordErrorText,
@@ -90,13 +117,90 @@ class _SignupPageState extends State<SignupPage> {
                   if (value == null || value.isEmpty) {
                     return "Please enter a password.";
                   }
-                  // Validate password length
                   if (value.length < 6) {
                     return "Password must be at least 6 characters.";
                   }
                   return null;
                 },
               ),
+              TextFormField(
+                controller: contactNumberController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
+                decoration: const InputDecoration(
+                  hintText: "Contact Number",
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter contact number.";
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: addressController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
+                decoration: const InputDecoration(
+                  hintText: "Address",
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter address.";
+                  }
+                  return null;
+                },
+              ),
+              DropdownButtonFormField<String>(
+                value: _userType,
+                decoration: const InputDecoration(
+                  hintText: "User Type",
+                ),
+                items: <String>['donor', 'organization'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    _userType = newValue!;
+                  });
+                },
+              ),
+              if (_userType == 'organization')
+                Column(
+                  children: [
+                    TextFormField(
+                      controller: orgNameController,
+                      style: TextStyle(
+                          color: Colors.black), // Set text color to black
+                      decoration: const InputDecoration(
+                        hintText: "Organization Name",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter organization name.";
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: proofsController,
+                      style: TextStyle(
+                          color: Colors.black), // Set text color to black
+                      decoration: const InputDecoration(
+                        hintText: "Proofs of Legitimacy",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter proofs of legitimacy.";
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -106,13 +210,19 @@ class _SignupPageState extends State<SignupPage> {
                       _passwordErrorText = null;
                     });
 
-                    String fullName =
-                        '${firstController.text.trim()} ${lastController.text.trim()}';
+                    List<String> addresses = [addressController.text.trim()];
+
                     String? result = await context.read<AuthProvider>().signUp(
                         emailController.text,
                         passwordController.text,
-                        firstController.text,
-                        lastController.text);
+                        firstNameController.text,
+                        lastNameController.text,
+                        usernameController.text,
+                        contactNumberController.text,
+                        addresses,
+                        _userType,
+                        orgNameController.text,
+                        proofsController.text);
 
                     if (result != null) {
                       switch (result) {
@@ -130,7 +240,6 @@ class _SignupPageState extends State<SignupPage> {
                           break;
                       }
                     } else {
-                      // Navigate to another screen upon successful sign-up
                       Navigator.pop(context);
                     }
                   }

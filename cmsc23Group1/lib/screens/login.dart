@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import '../screens/signup.dart';
-import '../screens/user_details.dart'; // Import UserDetailsPage
+import '../models/user.dart';
+import 'signup.dart'; // Import the SignUpPage
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,119 +13,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  String? _passwordErrorText;
-  Color _passwordBorderColor = Colors.grey;
-
-  String? _emailErrorText;
-  Color _emailBorderColor = Colors.grey;
+  String? _errorText;
+  UserType _selectedUserType = UserType.donor; // Default to donor
 
   @override
   Widget build(BuildContext context) {
-    final email = TextFormField(
-      key: const Key('emailField'),
-      controller: emailController,
-      decoration: InputDecoration(
-        hintText: "Email",
-        errorText: _emailErrorText,
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: _emailBorderColor),
-        ),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Please enter email.";
-        }
-        return null;
-      },
-    );
-
-    final password = TextFormField(
-      key: const Key('pwField'),
-      controller: passwordController,
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Password',
-        errorText: _passwordErrorText,
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: _passwordBorderColor),
-        ),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Please enter password.";
-        }
-        return null;
-      },
-    );
-
-    final loginButton = Padding(
-      key: const Key('loginButton'),
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            // Remove the previous error text upon clicking the log in button again
-            setState(() {
-              _emailErrorText = null;
-              _emailBorderColor = Colors.grey;
-              _passwordErrorText = null;
-              _passwordBorderColor = Colors.grey;
-            });
-
-            String? result = await context.read<AuthProvider>().signIn(
-                  emailController.text.trim(),
-                  passwordController.text.trim(),
-                );
-
-            if (result == null) {
-              // Navigate to user details page upon successful login
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => UserDetailsPage(),
-                ),
-              );
-            } else {
-              switch (result) {
-                case 'user-not-found':
-                  setState(() {
-                    _emailErrorText = "No user found for that email.";
-                    _emailBorderColor = Colors.red;
-                  });
-                  break;
-                case 'wrong-password':
-                  setState(() {
-                    _passwordErrorText =
-                        "Wrong password provided for that user.";
-                    _passwordBorderColor = Colors.red;
-                  });
-                  break;
-              }
-            }
-          }
-        },
-        child: const Text('Log In', style: TextStyle(color: Colors.black)),
-      ),
-    );
-
-    final signUpButton = Padding(
-      key: const Key('signUpButton'),
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        onPressed: () async {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const SignupPage(),
-            ),
-          );
-        },
-        child: const Text('Sign Up', style: TextStyle(color: Colors.black)),
-      ),
-    );
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -133,17 +27,103 @@ class _LoginPageState extends State<LoginPage> {
           key: _formKey,
           child: ListView(
             shrinkWrap: true,
-            padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
             children: <Widget>[
               const Text(
                 "Login",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25),
               ),
-              email,
-              password,
-              loginButton,
-              signUpButton,
+              DropdownButtonFormField<UserType>(
+                value: _selectedUserType,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedUserType = value!;
+                  });
+                },
+                items: UserType.values.map((UserType userType) {
+                  return DropdownMenuItem<UserType>(
+                    value: userType,
+                    child: Text(userType.toString().split('.').last),
+                  );
+                }).toList(),
+              ),
+              TextFormField(
+                controller: emailController,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
+                decoration: InputDecoration(
+                  hintText: "Email",
+                  errorText: _errorText,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter email.";
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                style:
+                    TextStyle(color: Colors.black), // Set text color to black
+                decoration: InputDecoration(
+                  hintText: "Password",
+                  errorText: _errorText,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter password.";
+                  }
+                  return null;
+                },
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      _errorText = null;
+                    });
+
+                    String? result = await context
+                        .read<AuthProvider>()
+                        .signIn(emailController.text, passwordController.text);
+
+                    if (result != null) {
+                      setState(() {
+                        _errorText = "Invalid email or password.";
+                      });
+                    } else {
+                      // Redirect to appropriate home page based on selected user type
+                      switch (_selectedUserType) {
+                        case UserType.admin:
+                          Navigator.pushReplacementNamed(
+                              context, '/admin_home');
+                          break;
+                        case UserType.organization:
+                          Navigator.pushReplacementNamed(
+                              context, '/organization_home');
+                          break;
+                        default:
+                          Navigator.pushReplacementNamed(
+                              context, '/donor_home');
+                      }
+                    }
+                  }
+                },
+                child:
+                    const Text('Login', style: TextStyle(color: Colors.black)),
+              ),
+              ElevatedButton(
+                // Add a new button for sign up
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignupPage()));
+                },
+                child: const Text('Sign Up',
+                    style: TextStyle(color: Colors.black)),
+              ),
             ],
           ),
         ),
