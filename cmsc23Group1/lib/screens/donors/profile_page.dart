@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'user_details_page.dart'; // Ensure this import matches the file path
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -38,6 +40,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(userEmails[index]),
+                    onTap: () {
+                      print(
+                          'Navigating to details page for email: ${userEmails[index]}');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              UserDetailsPage(email: userEmails[index]),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -60,6 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         if (email != null && isOrganization) {
           emails.add(email);
+          print('Fetched email: $email');
         }
       });
 
