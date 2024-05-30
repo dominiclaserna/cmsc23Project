@@ -36,7 +36,7 @@ class DonationFormProvider with ChangeNotifier {
   List<String> get selectedCategories => _selectedCategories;
   bool? get isForPickup => _donationFormData.isForPickup;
   double? get weight => _donationFormData.weight;
-  TimeOfDay? get pickUpDropoffTime => _donationFormData.pickupDropoffTime;
+  DateTime? get pickUpDropoffTime => _donationFormData.pickupDropoffTime;
 
 
   void updateCategory(String category, bool isSelected) {
@@ -72,7 +72,7 @@ class DonationFormProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePickupDropOffTime(TimeOfDay pickupDropoffTime) {
+  void updatePickupDropOffTime(DateTime pickupDropoffTime) {
     _donationFormData.pickupDropoffTime = pickupDropoffTime;
 
     print("time: ${_donationFormData.pickupDropoffTime.toString()}");

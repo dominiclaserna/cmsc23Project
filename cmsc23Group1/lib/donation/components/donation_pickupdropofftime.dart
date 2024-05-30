@@ -16,11 +16,45 @@ class _PickDropTimeTextFieldState extends State<PickDropTimeTextField> {
 
 
   TimeOfDay? selectedTime;
+  DateTime? selectedDate;
+  DateTime? completeTimeDetails = DateTime.now();
   TimePickerEntryMode entryMode = TimePickerEntryMode.dial;
   TextDirection textDirection = TextDirection.ltr;
   bool use24HourTime = false;
   MaterialTapTargetSize tapTargetSize = MaterialTapTargetSize.padded;
 
+
+  Widget createDatePicker(parentProvider) {
+
+    return IconButton(
+      icon: const Icon(Icons.calendar_month),
+      onPressed: () async {
+        final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate ?? DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2101),
+          // builder: 
+        );
+        if (picked != null && picked != selectedDate) {
+          setState(() {
+            selectedDate = picked;
+            print(selectedDate);
+
+            completeTimeDetails = DateTime(
+              selectedDate!.year, 
+              selectedDate!.month,
+              selectedDate!.day,
+              completeTimeDetails!.hour,
+              completeTimeDetails!.minute
+            );
+
+            parentProvider.updatePickupDropOffTime(completeTimeDetails);
+          });
+        }
+      },
+    );
+  }
 
   Widget createTimePicker(parentProvider) {
     
@@ -55,8 +89,17 @@ class _PickDropTimeTextFieldState extends State<PickDropTimeTextField> {
         );
         setState(() {
           selectedTime = time;
-          print(selectedTime); 
-          parentProvider.updatePickupDropOffTime(selectedTime);
+          print(selectedTime);
+
+          completeTimeDetails = DateTime(
+              completeTimeDetails!.year, 
+              completeTimeDetails!.month,
+              completeTimeDetails!.day,
+              selectedTime!.hour,
+              selectedTime!.minute
+              );
+
+          parentProvider.updatePickupDropOffTime(completeTimeDetails);
         });
       },
     );
@@ -66,8 +109,9 @@ class _PickDropTimeTextFieldState extends State<PickDropTimeTextField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("Selected time: ${selectedTime!.format(context)}"),
-        createTimePicker(parentProvider)
+        if(completeTimeDetails != null) Text("Selected date: ${completeTimeDetails!.toString()}"),
+        createTimePicker(parentProvider),
+        createDatePicker(parentProvider)
       ],
     );
   }
@@ -84,7 +128,7 @@ class _PickDropTimeTextFieldState extends State<PickDropTimeTextField> {
             style: DonationUtils.errorMessageStyle
           ),
         const Text("Enter drop-off/pickup time: "),
-        createTimePicker(parentProvider)
+        createTimeDisplayAndSelector(parentProvider)
       ],
     );
   }

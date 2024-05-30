@@ -11,7 +11,7 @@ class Donation {
   bool? isForPickup;
   double? weight;
   String? imageUrl;
-  TimeOfDay? pickupDropoffTime;
+  DateTime? pickupDropoffTime;
   List<String>? addressesForPickup;
   String? contactNumber;
   String? qrCode;
@@ -38,7 +38,7 @@ class Donation {
     imageUrl = null;
     addressesForPickup = null;
     contactNumber = null;
-    pickupDropoffTime = null;
+    pickupDropoffTime = DateTime.now();
     status = null;
   }
 
