@@ -3,22 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DonationDetailsPage extends StatelessWidget {
-  final String currentUserEmail;
-
-  DonationDetailsPage({required this.currentUserEmail});
-
   @override
   Widget build(BuildContext context) {
+    // Accessing the current user from Firebase Auth
+    User? user = FirebaseAuth.instance.currentUser;
+    print(user?.email);
     return Scaffold(
       appBar: AppBar(
         title: Text('Donation Details'),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
+      body: FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance
             .collection('donations')
-            .where('sender', isEqualTo: currentUserEmail)
-            .where('receiver', isEqualTo: currentUserEmail)
-            .snapshots(),
+            .where('receiver', isEqualTo: user?.email)
+            .where('sender', isEqualTo: user?.email)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -29,6 +28,10 @@ class DonationDetailsPage extends StatelessWidget {
           }
 
           final donations = snapshot.data!.docs;
+
+          if (donations.isEmpty) {
+            return Center(child: Text('No donations found.'));
+          }
 
           return ListView.builder(
             itemCount: donations.length,
