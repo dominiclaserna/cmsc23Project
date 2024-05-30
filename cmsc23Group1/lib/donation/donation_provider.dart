@@ -37,6 +37,7 @@ class DonationFormProvider with ChangeNotifier {
   bool? get isForPickup => _donationFormData.isForPickup;
   double? get weight => _donationFormData.weight;
   DateTime? get pickUpDropoffTime => _donationFormData.pickupDropoffTime;
+  List<String>? get addressesForPickup => _donationFormData.addressesForPickup;
 
 
   void updateCategory(String category, bool isSelected) {
@@ -62,6 +63,13 @@ class DonationFormProvider with ChangeNotifier {
     _donationFormData.weight = weight;
 
     print("Weight: ${_donationFormData.weight}");
+    notifyListeners();
+  }
+
+  void updateAddress(List<String> addresses) {
+    _donationFormData.addressesForPickup = addresses;
+
+    print("Addresses: ${_donationFormData.addressesForPickup}");
     notifyListeners();
   }
 

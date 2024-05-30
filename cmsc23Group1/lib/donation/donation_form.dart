@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:week9/donation/components/donation_address.dart';
 import 'package:week9/donation/components/donation_category.dart';
 import 'package:week9/donation/components/donation_pickupdropofftime.dart';
 import 'package:week9/donation/components/donation_weight.dart';
@@ -26,7 +27,8 @@ class _DonationFormState extends State<DonationForm> {
           CategoryCheckbox(),
           IsForPickupRadio(),
           WeightTextField(),
-          PickDropTimeTextField()
+          PickDropTimeTextField(),
+          DonationAddressInput()
         ]
       )
     );
