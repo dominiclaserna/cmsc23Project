@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/donate');
+                Navigator.pushNamed(context, '/donor_profile');
               },
               child: Text('Donate'),
             ),

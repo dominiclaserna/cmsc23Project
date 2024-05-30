@@ -7,20 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:week9/donation/firebase_donation_api.dart';
 import './donation_model.dart';
 
-  // String? id;
-  // List<String>? category;
-  // bool? isForPickup;
-  // Double? weight;
-  // String? imageUrl;
-  // DateTime? pickupDropoffTime;
-  // List<String>? addressesForPickup;
-  // String? contactNumber;
-  // String? qrCode;
-  // String? status;
+// String? id;
+// List<String>? category;
+// bool? isForPickup;
+// Double? weight;
+// String? imageUrl;
+// DateTime? pickupDropoffTime;
+// List<String>? addressesForPickup;
+// String? contactNumber;
+// String? qrCode;
+// String? status;
 
 class DonationFormProvider with ChangeNotifier {
   Donation _donationFormData = Donation.emptyDonation();
-  
+
   final List<String> _selectedCategories = [];
 
   String categoryErrorMessage = "";
@@ -30,18 +30,17 @@ class DonationFormProvider with ChangeNotifier {
   String addressErrorMessage = "";
   String contactNumErrorMessage = "";
 
-
-
   Donation get donationFormData => _donationFormData;
   List<String> get selectedCategories => _selectedCategories;
   bool? get isForPickup => _donationFormData.isForPickup;
   double? get weight => _donationFormData.weight;
   DateTime? get pickUpDropoffTime => _donationFormData.pickupDropoffTime;
   List<String>? get addressesForPickup => _donationFormData.addressesForPickup;
-
+  String? get receiver => _donationFormData.receiver;
+  String? get sender => _donationFormData.sender;
 
   void updateCategory(String category, bool isSelected) {
-    if(isSelected) {
+    if (isSelected) {
       _selectedCategories.add(category);
     } else {
       _selectedCategories.remove(category);
@@ -53,9 +52,20 @@ class DonationFormProvider with ChangeNotifier {
   }
 
   void updateIsForPickup(bool isForPickup) {
-
     _donationFormData.isForPickup = isForPickup;
     print("Pickup: ${_donationFormData.isForPickup}");
+    notifyListeners();
+  }
+
+  void updateReceiver(String receiverEmail) {
+    _donationFormData.receiver = receiverEmail;
+    print("Receiver: ${_donationFormData.receiver}");
+    notifyListeners();
+  }
+
+  void updateSender(String sender) {
+    _donationFormData.sender = sender;
+    print("Sender: ${_donationFormData.sender}");
     notifyListeners();
   }
 

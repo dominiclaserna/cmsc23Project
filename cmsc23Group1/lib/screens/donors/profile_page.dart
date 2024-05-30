@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Profile Page Content',
+              'List of Organizations',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),
@@ -31,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 _fetchUserEmails(context);
               },
-              child: Text('Fetch User Emails'),
+              child: Text('Fetch Organzation Emails'),
             ),
             SizedBox(height: 20),
             Expanded(

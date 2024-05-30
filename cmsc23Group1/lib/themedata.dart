@@ -34,8 +34,9 @@ final ThemeData appTheme = ThemeData(
     ),
   ),
   textTheme: const TextTheme(
-    displayLarge: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Color(0xFF343A40)),
-    bodyLarge: TextStyle(fontSize: 16.0, color: Colors.white), // Body text color
-
+    displayLarge: TextStyle(
+        fontSize: 24.0, fontWeight: FontWeight.bold, color: Color(0xFF343A40)),
+    bodyLarge:
+        TextStyle(fontSize: 16.0, color: Colors.black), // Body text color
   ),
 );

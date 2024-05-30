@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:week9/screens/donation_page.dart';
 
 class UserDetailsPage extends StatelessWidget {
   final String email;
@@ -10,7 +11,7 @@ class UserDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Details'),
+        title: Text('Organization Details'),
       ),
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance
@@ -65,6 +66,20 @@ class UserDetailsWidget extends StatelessWidget {
           Text(
             'Last Name: ${userData['lastName'] ?? 'Not available'}',
             style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(
+              height: 20), // Add some space between user details and button
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DonationPage(receiverEmail: userData['email']),
+                ),
+              );
+            },
+            child: Text('Donate'),
           ),
         ],
       ),

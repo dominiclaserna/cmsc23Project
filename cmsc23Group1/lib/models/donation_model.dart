@@ -1,65 +1,42 @@
-// ignore_for_file: non_constant_identifier_names
+import 'package:flutter/material.dart';
 
-import 'dart:convert';
-import 'dart:ffi';
+enum DonationCategory {
+  Food,
+  Clothes,
+  Cash,
+  Necessities,
+  Others,
+}
+
+enum PickupType {
+  Pickup,
+  DropOff,
+}
 
 class Donation {
-  String? id;
-  List<String> category;
-  bool isForPickup;
-  Double weight;
-  String? imageUrl;
-  DateTime pickupDropoffTime;
-  List<String>? addressesForPickup;
-  String contactNumber;
-  String? qrCode;
-  String status;
+  final List<DonationCategory> categories;
+  final PickupType pickupType;
+  final double weight; // in kg or lbs
+  final String? photoUrl; // URL to the photo of the items (optional)
+  final DateTime dateTime;
+  final String? address;
+  final String? contactNumber;
+  final String? qrCode; // QR code for drop-off (optional)
+  final String? receiver; // Receiver of the donation
+  final String? sender; // Sender of the donation
+  bool isCancelled;
 
   Donation({
-    this.id,
-    required this.category,
-    required this.isForPickup,
+    required this.categories,
+    required this.pickupType,
     required this.weight,
-    this.imageUrl,
-    this.addressesForPickup,
-    required this.contactNumber,
-    required this.pickupDropoffTime,
-    required this.status,
-    this.qrCode
+    this.photoUrl,
+    required this.dateTime,
+    this.address,
+    this.contactNumber,
+    this.qrCode,
+    this.receiver,
+    this.sender,
+    this.isCancelled = false,
   });
-
-  factory Donation.fromJson(Map<String, dynamic> json) {
-    return Donation(
-      id: json['id'],
-      category: json['category'],
-      isForPickup: json['isForPickup'],
-      weight: json['weight'],
-      imageUrl: json['imageUrl'],
-      pickupDropoffTime: json['pickupDropoffTime'],
-      addressesForPickup: json['addressesForPickup'],
-      contactNumber: json['contactNumber'],
-      qrCode: json['qrCode'],
-      status: json['status'],
-    );
-  }
-
-  static List<Donation> fromJsonArray(String jsonData) {
-    final Iterable<dynamic> data = jsonDecode(jsonData);
-    return data.map<Donation>((dynamic d) => Donation.fromJson(d)).toList();
-  }
-
-  Map<String, dynamic> toJson(Donation donation) {
-    return {
-      "id": donation.id,
-      "category": donation.category,
-      "isForPickup": donation.isForPickup,
-      "weight": donation.weight,
-      "imageUrl": donation.imageUrl,
-      "pickupDropoffTime": donation.pickupDropoffTime,
-      "addressesForPickup": donation.addressesForPickup,
-      "contactNumber": donation.contactNumber,
-      "qrCode": donation.qrCode,
-      "status": donation.status,
-    };
-  }
 }
