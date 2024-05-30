@@ -6,6 +6,8 @@ import 'package:week9/screens/org/org_home_page.dart';
 import 'package:week9/screens/org/org_profile_page.dart';
 import 'package:week9/themedata.dart';
 import 'screens/admin/admin_home.dart';
+import 'package:week9/donation/donation_provider.dart';
+import 'package:week9/screens/donation_page.dart';
 import 'screens/donors/home_page.dart';
 import 'screens/donors/donate_page.dart';
 import 'screens/donors/profile_page.dart';
@@ -14,7 +16,7 @@ import '../providers/todo_provider.dart';
 import '../providers/auth_provider.dart';
 import '../screens/login.dart';
 import 'firebase_options.dart';
-
+import 'screens/donors/donate_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -24,8 +26,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => TodoListProvider()),
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: ((context) => TodoListProvider())),
+        ChangeNotifierProvider(create: ((context) => AuthProvider())),
+        ChangeNotifierProvider(create: ((context) => DonationFormProvider())),
       ],
       child: MyApp(),
     ),
@@ -46,7 +49,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/donate': (context) => DonatePage(),
         '/donor_home': (context) => HomePage(),
-        '/donor_profile': (context) => ProfilePage(),
+        '/donor_donationpage': (context) => DonationPage(),
         '/org_profile': (context) => OrgProfilePage(),
         '/organization_home': (context) => OrgHomePage(),
         '/admin_home': (context) => AdminHomePage(),
