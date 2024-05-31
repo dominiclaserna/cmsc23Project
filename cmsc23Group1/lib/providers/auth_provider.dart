@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:week9/api/firebase_auth_api.dart';
+import '../models/user.dart'; // Import the UserType enum
 
 class AuthProvider with ChangeNotifier {
   late FirebaseAuthAPI authService;
   late Stream<firebase.User?> uStream;
   firebase.User? userObj;
   bool isOrganization = false;
+  UserType? userType; // Property to store the user's type
 
   AuthProvider() {
     authService = FirebaseAuthAPI();
@@ -36,9 +38,24 @@ class AuthProvider with ChangeNotifier {
         .get();
     if (userDoc.exists) {
       isOrganization = userDoc['isOrganization'] ?? false;
+      // Fetch and set the user's type
+      userType = userDoc['userType'] as UserType?;
+      print('User Type: $userType');
+      print('Admin Type: ${UserType.admin}');
     } else {
       isOrganization = false;
+      userType = null; // Reset userType if user document doesn't exist
     }
+  }
+
+  // Getter to check if the logged-in user is an admin
+  bool get isAdmin {
+    // If userType is null or not admin, return false
+    if (userType == null || userType != UserType.admin) {
+      return false;
+    }
+    // Otherwise, return true
+    return true;
   }
 
   Future<String?> signUp(

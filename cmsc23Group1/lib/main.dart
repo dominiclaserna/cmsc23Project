@@ -14,6 +14,10 @@ import 'screens/donors/profile_page.dart';
 import '../providers/auth_provider.dart';
 import '../screens/login.dart';
 import 'firebase_options.dart';
+import 'package:week9/screens/admin/admin_home.dart';
+import 'package:week9/screens/admin/admin_donations.dart';
+import 'package:week9/screens/admin/admin_donors.dart';
+import 'package:week9/screens/admin/admin_organizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +59,10 @@ class MyApp extends StatelessWidget {
         '/donor_profile': (context) => ProfilePage(),
         '/donated': (context) => DonationSentPage(),
         '/user_profile': (context) => UserProfilePage(),
+        '/admin_home': (context) => AdminHomePage(),
+        '/admin_donations': (context) => AdminAllDonationsPage(),
+        '/admin_donors': (context) => AdminAllDonorsPage(),
+        '/admin_orgs': (context) => adminallorganizationPage(),
       },
     );
   }

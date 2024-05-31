@@ -14,7 +14,7 @@ class AdminHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                // Navigate to view all organizations and donations
+                Navigator.pushNamed(context, '/admin_donations');
               },
               child: Text('View All Organizations and Donations'),
             ),
@@ -26,9 +26,15 @@ class AdminHomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Navigate to view all donors
+                Navigator.pushNamed(context, '/admin_donors');
               },
               child: Text('View All Donors'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/admin_orgs');
+              },
+              child: Text('View All Organizations'),
             ),
           ],
         ),
