@@ -39,7 +39,7 @@ class AuthProvider with ChangeNotifier {
     if (userDoc.exists) {
       isOrganization = userDoc['isOrganization'] ?? false;
       // Fetch and set the user's type
-      userType = userDoc['userType'] as UserType?;
+      String? userType = userDoc['userType'];
       print('User Type: $userType');
       print('Admin Type: ${UserType.admin}');
     } else {
