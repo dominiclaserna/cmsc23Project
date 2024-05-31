@@ -22,6 +22,12 @@ class HomePage extends StatelessWidget {
               },
               child: Text('Donation History'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/user_profile');
+              },
+              child: Text('User Profile'),
+            ),
           ],
         ),
       ),
