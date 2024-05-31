@@ -13,6 +13,14 @@ enum PickupType {
   DropOff,
 }
 
+enum DonationStatus {
+  Cancelled,
+  Pending,
+  Confirmed,
+  ScheduledForPickup,
+  Completed,
+}
+
 class Donation {
   final List<DonationCategory> categories;
   final PickupType pickupType;
@@ -24,6 +32,7 @@ class Donation {
   final String? qrCode; // QR code for drop-off (optional)
   final String? receiver; // Receiver of the donation
   final String? sender; // Sender of the donation
+  final DonationStatus status; // Status of the donation
   bool isCancelled;
 
   Donation({
@@ -37,6 +46,7 @@ class Donation {
     this.qrCode,
     this.receiver,
     this.sender,
+    this.status = DonationStatus.Pending, // Default status is Pending
     this.isCancelled = false,
   });
 }

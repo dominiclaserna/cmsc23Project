@@ -22,6 +22,7 @@ void saveDonationToFirestore(Donation donation) async {
       'isCancelled': donation.isCancelled,
       'receiver': donation.receiver,
       'sender': donation.sender,
+      'status': "Pending",
     });
 
     // Display a success message
@@ -29,5 +30,18 @@ void saveDonationToFirestore(Donation donation) async {
   } catch (e) {
     // Handle errors
     print('Error saving donation: $e');
+  }
+}
+
+Future<void> updateDonationStatusInFirestore(
+    String donationId, String newStatus) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('donations')
+        .doc(donationId)
+        .update({'status': newStatus});
+    print('Donation status updated to $newStatus');
+  } catch (e) {
+    print('Error updating donation status: $e');
   }
 }
