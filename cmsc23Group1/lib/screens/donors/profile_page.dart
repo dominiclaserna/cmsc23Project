@@ -62,8 +62,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _fetchUserEmails(BuildContext context) async {
     try {
-      QuerySnapshot usersSnapshot =
-          await FirebaseFirestore.instance.collection('users').get();
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('acceptingDonations', isEqualTo: true)
+          .get();
 
       List<String> emails = [];
       usersSnapshot.docs.forEach((doc) {
