@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'user_details_page.dart'; // Ensure this import matches the file path
+import '/main.dart'; // Import your main.dart to access CustomAppBar
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -15,9 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
+      appBar: CustomAppBar(), // Include the CustomAppBar here
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 _fetchUserEmails(context);
               },
-              child: Text('Fetch Organzation Emails'),
+              child: Text('Fetch Organization Emails'),
             ),
             SizedBox(height: 20),
             Expanded(

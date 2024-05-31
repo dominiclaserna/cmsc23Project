@@ -18,11 +18,9 @@ class FirebaseAuthAPI {
   }
 
   Future<String?> signIn(String email, String password) async {
-    UserCredential credential;
     try {
-      final credential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      print(credential);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      return null; // Return null to indicate success
     } on FirebaseAuthException catch (e) {
       return e.code;
     }
@@ -41,9 +39,8 @@ class FirebaseAuthAPI {
     String? proofs,
     bool isOrganization,
   ) async {
-    UserCredential credential;
     try {
-      credential = await auth.createUserWithEmailAndPassword(
+      UserCredential credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -53,7 +50,7 @@ class FirebaseAuthAPI {
       await credential.user?.reload();
 
       // Save additional fields to Firestore
-      var user = await auth.currentUser;
+      User? user = auth.currentUser;
       Map<String, dynamic> userData = {
         'firstName': firstName,
         'lastName': lastName,
@@ -64,25 +61,27 @@ class FirebaseAuthAPI {
         'userType': userType,
         'isOrganization': isOrganization,
       };
-      if (userType == 'organization') {
+
+      if (isOrganization) {
         userData['orgName'] = orgName;
         userData['proofs'] = proofs;
       }
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user?.uid)
           .set(userData);
 
-      return null;
+      return null; // Return null to indicate success
     } on FirebaseAuthException catch (e) {
       return e.code;
     } catch (e) {
       print(e);
-      return ('unknown error');
+      return 'unknown error';
     }
   }
 
   Future<void> signOut() async {
-    auth.signOut();
+    await auth.signOut();
   }
 }

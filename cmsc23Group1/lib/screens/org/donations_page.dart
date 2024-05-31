@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '/main.dart'; // Import your main.dart to access CustomAppBar
 
 class DonationDetailsPage extends StatelessWidget {
   @override
@@ -9,9 +10,7 @@ class DonationDetailsPage extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     print(user?.email);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Donation Details'),
-      ),
+      appBar: CustomAppBar(), // Include the CustomAppBar here
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance
             .collection('donations')

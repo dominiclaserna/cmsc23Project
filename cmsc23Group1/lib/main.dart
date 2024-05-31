@@ -4,14 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:week9/screens/org/org_home_page.dart';
 import 'package:week9/screens/org/org_profile_page.dart';
 import 'package:week9/themedata.dart';
-import 'screens/admin/admin_home.dart';
 import 'package:week9/donation/donation_provider.dart';
 import 'package:week9/screens/donation_page.dart';
 import 'screens/donors/home_page.dart';
 import 'screens/org/donations_page.dart';
 import 'screens/donors/profile_page.dart';
-import 'screens/donors/user_details_page.dart';
-import '../providers/todo_provider.dart';
 import '../providers/auth_provider.dart';
 import '../screens/login.dart';
 import 'firebase_options.dart';
@@ -25,7 +22,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => TodoListProvider())),
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
         ChangeNotifierProvider(create: ((context) => DonationFormProvider())),
       ],
@@ -54,9 +50,31 @@ class MyApp extends StatelessWidget {
         '/donor_home': (context) => HomePage(),
         '/org_profile': (context) => OrgProfilePage(),
         '/organization_home': (context) => OrgHomePage(),
-        '/admin_home': (context) => AdminHomePage(),
         '/donor_profile': (context) => ProfilePage(),
       },
     );
   }
+}
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white, // Set the background color to white
+      title: Text('CMSC23 Project'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () {
+            Provider.of<AuthProvider>(context, listen: false).signOut();
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/login', (route) => false);
+          },
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/main.dart'; // Import your main.dart to access CustomAppBar
 
 class OrgProfilePage extends StatefulWidget {
   @override
@@ -14,6 +15,14 @@ class _OrgProfilePageState extends State<OrgProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              // Implement logout functionality
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

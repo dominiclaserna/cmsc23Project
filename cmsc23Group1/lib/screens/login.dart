@@ -41,7 +41,9 @@ class _LoginPageState extends State<LoginPage> {
                     _selectedUserType = value!;
                   });
                 },
-                items: UserType.values.map((UserType userType) {
+                items: UserType.values
+                    .where((userType) => userType != UserType.admin) // Filter out admin
+                    .map((UserType userType) {
                   return DropdownMenuItem<UserType>(
                     value: userType,
                     child: Text(userType.toString().split('.').last),
@@ -50,8 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextFormField(
                 controller: emailController,
-                style:
-                    TextStyle(color: Colors.black), // Set text color to black
+                style: const TextStyle(color: Colors.black), // Set text color to black
                 decoration: InputDecoration(
                   hintText: "Email",
                   errorText: _errorText,
@@ -66,8 +67,7 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
-                style:
-                    TextStyle(color: Colors.black), // Set text color to black
+                style: const TextStyle(color: Colors.black), // Set text color to black
                 decoration: InputDecoration(
                   hintText: "Password",
                   errorText: _errorText,
@@ -95,34 +95,33 @@ class _LoginPageState extends State<LoginPage> {
                         _errorText = "Invalid email or password.";
                       });
                     } else {
-                      // Redirect to appropriate home page based on selected user type
-                      switch (_selectedUserType) {
-                        case UserType.admin:
-                          Navigator.pushReplacementNamed(
-                              context, '/admin_home');
-                          break;
-                        case UserType.organization:
-                          Navigator.pushReplacementNamed(
-                              context, '/organization_home');
-                          break;
-                        default:
-                          Navigator.pushReplacementNamed(
-                              context, '/donor_home');
+                      // Check if the user is allowed to log in as an organization
+                      bool isOrganization = context.read<AuthProvider>().isOrganization;
+                      if (_selectedUserType == UserType.organization && !isOrganization) {
+                        setState(() {
+                          _errorText = "You are not authorized to log in as an organization.";
+                        });
+                      } else {
+                        // Redirect to appropriate home page based on selected user type
+                        switch (_selectedUserType) {
+                          case UserType.organization:
+                            Navigator.pushReplacementNamed(context, '/organization_home');
+                            break;
+                          default:
+                            Navigator.pushReplacementNamed(context, '/donor_home');
+                        }
                       }
                     }
                   }
                 },
-                child:
-                    const Text('Login', style: TextStyle(color: Colors.black)),
+                child: const Text('Login', style: TextStyle(color: Colors.black)),
               ),
               ElevatedButton(
                 // Add a new button for sign up
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignupPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
                 },
-                child: const Text('Sign Up',
-                    style: TextStyle(color: Colors.black)),
+                child: const Text('Sign Up', style: TextStyle(color: Colors.black)),
               ),
             ],
           ),

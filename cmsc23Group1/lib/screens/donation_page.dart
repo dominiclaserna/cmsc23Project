@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:week9/models/donation_model.dart';
 import 'package:week9/api/donation_api.dart';
+import 'package:week9/main.dart';
 
 class DonationPage extends StatefulWidget {
   final String receiverEmail; // Add receiverEmail parameter
@@ -23,6 +24,7 @@ class _DonationPageState extends State<DonationPage> {
   TextEditingController _senderController = TextEditingController();
   bool _isCancelled = false;
   DateTime? _selectedDateTime;
+
   void initState() {
     super.initState();
 
@@ -35,9 +37,7 @@ class _DonationPageState extends State<DonationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Donation'),
-      ),
+      appBar: CustomAppBar(), // Add the CustomAppBar here
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

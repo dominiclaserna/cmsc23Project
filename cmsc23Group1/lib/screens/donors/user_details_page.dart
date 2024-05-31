@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:week9/screens/donation_page.dart';
+import 'package:week9/main.dart'; // Import the CustomAppBar from main.dart
 
 class UserDetailsPage extends StatelessWidget {
   final String email;
@@ -10,9 +11,7 @@ class UserDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Organization Details'),
-      ),
+      appBar: CustomAppBar(),
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance
             .collection('users')
@@ -54,7 +53,7 @@ class UserDetailsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Email: ${userData['email'] ?? 'Not available'}',
+            'Email: ${userData['orgName'] ?? 'Not available'}',
             style: TextStyle(fontSize: 18),
           ),
           SizedBox(height: 10),
@@ -75,7 +74,7 @@ class UserDetailsWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      DonationPage(receiverEmail: userData['email']),
+                      DonationPage(receiverEmail: userData['orgName']),
                 ),
               );
             },
