@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../api/firebase_auth_api.dart';
 
-const dbConnection = "donation";
+const dbConnection = "donations";
 
 class FirebaseDonationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;

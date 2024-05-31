@@ -14,13 +14,21 @@ class DonationAddressInput extends StatefulWidget {
 }
 
 class _DonationAddressInputState extends State<DonationAddressInput> {
-  List<String>? addresses = ["test", "test2"];
+  List<String>? addresses;
   TextEditingController addressController = TextEditingController();
 
   Widget createAddressCard(String address) {
     return ListTile(
       leading: Text(address),
-      trailing: IconButton.outlined(onPressed: () {print("Button pressed.");}, icon: const Icon(Icons.delete)),
+      trailing: IconButton.outlined(
+        icon: const Icon(Icons.delete),
+        onPressed: () {
+          setState(() {
+            print("Deleteing ${address}.");
+            addresses?.removeWhere((place) => place == address);
+          });
+        }
+      ), 
       title: Text(address),
     );
   }
@@ -36,49 +44,49 @@ class _DonationAddressInputState extends State<DonationAddressInput> {
   }
 
   Widget createAddressInput(context, parentProvider) {
-    return Container(
-      width: double.maxFinite,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextField(
-            keyboardType: TextInputType.streetAddress,
-            controller: addressController,
-            decoration: DonationUtils.inputBorderStyle,
-            onChanged: (value) {
-              parentProvider.updateWeight(double.parse(addressController.text));
-            },
-          ),
-          TextButton(
-            child: const Text("Add Address"),
-            onPressed: () {
-              addresses!.add(addressController.text);
+    return TextField(
+      keyboardType: TextInputType.streetAddress,
+      controller: addressController,
+      decoration: DonationUtils.inputBorderStyle.copyWith(
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            setState(() {
+              print("Add address button has been pressed with the value: ${addressController.text}");
+              addresses?.add(addressController.text);
               parentProvider.updateAddress(addresses);
               addressController.clear();
-            },
-          )
-        ],
-      )
+              FocusScope.of(context).unfocus();
+            });
+          },
+        )
+      ),
+      onChanged: (value) {
+        parentProvider.updateAddress(double.parse(addressController.text));
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final parentProvider = Provider.of<DonationFormProvider>(context);
+    addresses = parentProvider.addressesForPickup ?? [];
+    // if (parentProvider.isForPickup == false || parentProvider.isForPickup == null)  {
+    //   return const Text("Not for pickup.");
+    // }
 
-    if (parentProvider.isForPickup == false || parentProvider.isForPickup == null)  {
-      return const Text("Not for pickup.");
-    }
+    // return createAddressInput(context, parentProvider);
 
-    return createAddressInput(context, parentProvider);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Enter address(es) for pickup: "),
-        // createAddressInput(context, parentProvider),
-        createAddressList(context)
-      ],
+    return Visibility(
+      visible: parentProvider.isForPickup == true,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Enter address(es) for pickup: "),
+          createAddressInput(context, parentProvider),
+          createAddressList(context)
+        ],
+      ),
     );
     
   }
