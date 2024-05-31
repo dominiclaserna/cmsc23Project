@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -22,15 +24,17 @@ class _WeightTextFieldState extends State<WeightTextField> {
     final parentProvider = Provider.of<DonationFormProvider>(context);
 
     double weight = 0;
+    bool isInKg = true;
+
 
     String kgToLb (String value) {
-      double newValue = value as double;
+      double newValue = double.parse(value);
       newValue = newValue * 2.20462;
       return newValue.toStringAsFixed(2);
     }
 
     String lbToKg (String value) {
-      double newValue = value as double;
+      double newValue = double.parse(value);
       newValue = newValue / 2.20462;
       return newValue.toStringAsFixed(2);
     }
@@ -42,14 +46,30 @@ class _WeightTextFieldState extends State<WeightTextField> {
             parentProvider.weightErrorMessage,
             style: DonationUtils.errorMessageStyle
           ),
-        const Text("Weight of items (kgs): "),
+        Text("Weight of items (${isInKg ? 'kg' :'lb'}): "),
         TextField(
           keyboardType: TextInputType.number,
           controller: weightController,
-          decoration: DonationUtils.inputBorderStyle,
+          decoration: DonationUtils.inputBorderStyle.copyWith(
+            suffixIcon: TextButton(
+              child: Text(isInKg ? "kg" : "Lbs"),
+              onPressed: () {
+                setState(() {
+                  isInKg = !isInKg;
+                  print(isInKg);
+                  if(isInKg) {
+                    weightController.text = kgToLb(weightController.text);
+                  } else {
+                    weightController.text = lbToKg(weightController.text);
+                  }
+                });
+              },
+            )
+          ),
           onChanged: (value) {
             parentProvider.updateWeight(double.parse(weightController.text));
           },
+          
         )
       ],
     );

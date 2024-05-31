@@ -19,7 +19,6 @@ class _DonationAddressInputState extends State<DonationAddressInput> {
 
   Widget createAddressCard(String address) {
     return ListTile(
-      leading: Text(address),
       trailing: IconButton.outlined(
         icon: const Icon(Icons.delete),
         onPressed: () {
