@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/todo_provider.dart';
-import '../providers/auth_provider.dart';
-import '../screens/todo_page.dart';
-import '../screens/user_details.dart';
-import '../screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:week9/screens/org/org_home_page.dart';
+import 'package:week9/screens/org/org_profile_page.dart';
+import 'package:week9/themedata.dart';
+import 'package:week9/donation/donation_provider.dart';
+import 'package:week9/screens/donation_page.dart';
+import 'package:week9/screens/donors/donor_profile.dart';
+import 'screens/donors/home_page.dart';
+import 'screens/donors/donations_page.dart';
+import 'screens/org/donation_drive_page.dart';
+import 'screens/org/donations_page.dart';
+import 'screens/donors/profile_page.dart';
+import '../providers/auth_provider.dart';
+import '../screens/login.dart';
 import 'firebase_options.dart';
-
+import 'package:week9/screens/admin/admin_home.dart';
+import 'package:week9/screens/admin/admin_donations.dart';
+import 'package:week9/screens/admin/admin_donors.dart';
+import 'package:week9/screens/admin/admin_organizations.dart';
+import 'package:week9/screens/admin/admin_approve.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +30,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => TodoListProvider())),
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
+        ChangeNotifierProvider(create: ((context) => DonationFormProvider())),
       ],
       child: MyApp(),
     ),
@@ -27,26 +39,58 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo with Auth',
-      initialRoute: '/',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      initialRoute: '/login',
+      theme: appTheme,
       routes: {
-        '/': (context) => const TodoPage(),
         '/login': (context) => const LoginPage(),
-        '/todo': (context) => const LoginPage(),
-        '/user_details': (context) => const UserDetailsPage(),
-        
+        '/donate': (context) {
+          final String receiverEmail =
+              ModalRoute.of(context)!.settings.arguments as String;
+          return DonationPage(receiverEmail: receiverEmail);
+        },
+        '/donation': (context) => DonationDetailsPage(),
+        '/donationDrive': (context) => DonationDrivePage(),
+        '/donor_home': (context) => HomePage(),
+        '/org_profile': (context) => OrgProfilePage(),
+        '/organization_home': (context) => OrgHomePage(),
+        '/donor_profile': (context) => ProfilePage(),
+        '/donated': (context) => DonationSentPage(),
+        '/user_profile': (context) => UserProfilePage(),
+        '/admin_home': (context) => AdminHomePage(),
+        '/admin_donations': (context) => AdminAllDonationsPage(),
+        '/admin_donors': (context) => AdminAllDonorsPage(),
+        '/admin_orgs': (context) => adminallorganizationPage(),
+        '/admin_approve': (context) => AdminApproverPage(),
       },
     );
   }
 }
 
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white, // Set the background color to white
+      title: Text('CMSC23 Project'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () {
+            Provider.of<AuthProvider>(context, listen: false).signOut();
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/login', (route) => false);
+          },
+        ),
+      ],
+    );
+  }
 
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}

@@ -13,36 +13,34 @@ class FirebaseAuthAPI {
   }
 
   String? getUserUID() {
-    var currentUser = auth.currentUser; //get current user
-    return currentUser?.uid; // return the uid of current user
+    var currentUser = auth.currentUser;
+    return currentUser?.uid;
   }
 
   Future<String?> signIn(String email, String password) async {
-    UserCredential credential;
     try {
-      final credential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-
-      //let's print the object returned by signInWithEmailAndPassword
-      //you can use this object to get the user's id, email, etc.
-      print(credential);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      return null; // Return null to indicate success
     } on FirebaseAuthException catch (e) {
-      // if (e.code == 'user-not-found') {
-      //possible to return something more useful
-      //than just print an error message to improve UI/UX
-      //   print('No user found for that email.');
-      // } else if (e.code == 'wrong-password') {
-      //   print('Wrong password provided for that user.');
-      // }
       return e.code;
     }
   }
 
   Future<String?> signUp(
-      String email, String password, String firstName, String lastName) async {
-    UserCredential credential;
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+    String username,
+    String contactNumber,
+    List<String> addresses,
+    String userType,
+    String? orgName,
+    String? proofs,
+    bool isOrganization,
+  ) async {
     try {
-      credential = await auth.createUserWithEmailAndPassword(
+      UserCredential credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -52,23 +50,38 @@ class FirebaseAuthAPI {
       await credential.user?.reload();
 
       // Save additional fields to Firestore
-      var user = await auth.currentUser;
-      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+      User? user = auth.currentUser;
+      Map<String, dynamic> userData = {
         'firstName': firstName,
         'lastName': lastName,
+        'username': username,
         'email': email,
-      });
+        'contactNumber': contactNumber,
+        'addresses': addresses,
+        'userType': userType,
+        'isOrganization': isOrganization,
+      };
 
-      return null;
+      if (isOrganization) {
+        userData['orgName'] = orgName;
+        userData['proofs'] = proofs;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .set(userData);
+
+      return null; // Return null to indicate success
     } on FirebaseAuthException catch (e) {
       return e.code;
     } catch (e) {
       print(e);
-      return ('unknown error');
+      return 'unknown error';
     }
   }
 
   Future<void> signOut() async {
-    auth.signOut();
+    await auth.signOut();
   }
 }
