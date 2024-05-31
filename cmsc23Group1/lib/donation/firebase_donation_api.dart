@@ -33,7 +33,7 @@ class FirebaseDonationAPI {
 
   Stream<QuerySnapshot> getAllDonations() {
     String? uid = _authAPI.getUserUID();
-    return db.collection("todos").where("uid", isEqualTo: uid).snapshots();
+    return db.collection(dbConnection).where("uid", isEqualTo: uid).snapshots();
     // return db.collection("todos").snapshots();
 
     // try {
