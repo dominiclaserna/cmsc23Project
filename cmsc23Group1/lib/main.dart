@@ -7,6 +7,7 @@ import 'package:week9/themedata.dart';
 import 'package:week9/donation/donation_provider.dart';
 import 'package:week9/screens/donation_page.dart';
 import 'screens/donors/home_page.dart';
+import 'screens/donors/donations_page.dart';
 import 'screens/org/donations_page.dart';
 import 'screens/donors/profile_page.dart';
 import '../providers/auth_provider.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/org_profile': (context) => OrgProfilePage(),
         '/organization_home': (context) => OrgHomePage(),
         '/donor_profile': (context) => ProfilePage(),
+        '/donated': (context) => DonationSentPage(),
       },
     );
   }

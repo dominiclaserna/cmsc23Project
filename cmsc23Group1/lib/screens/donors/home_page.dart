@@ -18,9 +18,9 @@ class HomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/donor_profile');
+                Navigator.pushNamed(context, '/donated');
               },
-              child: Text('Profile'),
+              child: Text('Donation History'),
             ),
           ],
         ),
