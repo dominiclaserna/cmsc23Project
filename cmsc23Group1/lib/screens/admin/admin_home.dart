@@ -20,7 +20,7 @@ class AdminHomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Navigate to approve an organization sign up
+                Navigator.pushNamed(context, '/admin_approve');
               },
               child: Text('Approve Organization Sign Up'),
             ),

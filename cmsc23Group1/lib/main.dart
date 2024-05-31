@@ -18,6 +18,7 @@ import 'package:week9/screens/admin/admin_home.dart';
 import 'package:week9/screens/admin/admin_donations.dart';
 import 'package:week9/screens/admin/admin_donors.dart';
 import 'package:week9/screens/admin/admin_organizations.dart';
+import 'package:week9/screens/admin/admin_approve.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         '/admin_donations': (context) => AdminAllDonationsPage(),
         '/admin_donors': (context) => AdminAllDonorsPage(),
         '/admin_orgs': (context) => adminallorganizationPage(),
+        '/admin_approve': (context) => AdminApproverPage(),
       },
     );
   }
