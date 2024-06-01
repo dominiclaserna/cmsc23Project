@@ -17,6 +17,7 @@ import '../screens/login.dart';
 import 'firebase_options.dart';
 import 'package:week9/screens/admin/admin_home.dart';
 import 'package:week9/screens/admin/admin_donations.dart';
+import 'package:week9/screens/admin/admin_drive.dart';
 import 'package:week9/screens/admin/admin_donors.dart';
 import 'package:week9/screens/admin/admin_organizations.dart';
 import 'package:week9/screens/admin/admin_approve.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         '/admin_donors': (context) => AdminAllDonorsPage(),
         '/admin_orgs': (context) => adminallorganizationPage(),
         '/admin_approve': (context) => AdminApproverPage(),
+        '/admin_drives': (context) => AllDonationDrivesPage(),
       },
     );
   }
