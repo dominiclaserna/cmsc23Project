@@ -32,6 +32,12 @@ class AdminHomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                Navigator.pushNamed(context, '/admin_drives');
+              },
+              child: Text('View All Donation Drives'),
+            ),
+            ElevatedButton(
+              onPressed: () {
                 Navigator.pushNamed(context, '/admin_orgs');
               },
               child: Text('View All Organizations'),
