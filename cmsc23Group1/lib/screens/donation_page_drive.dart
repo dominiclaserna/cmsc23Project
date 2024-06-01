@@ -4,17 +4,16 @@ import 'package:week9/models/donation_model.dart';
 import 'package:week9/api/donation_api.dart';
 import 'package:week9/main.dart';
 
-class DonationPage extends StatefulWidget {
-  final String receiverEmail; // Add receiverEmail parameter
+class DonationPageDrive extends StatefulWidget {
+  final String driveName; // Change receiverEmail to driveName
 
-  DonationPage(
-      {required this.receiverEmail}); // Constructor to receive receiverEmail
+  DonationPageDrive({required this.driveName}); // Update the constructor
 
   @override
-  _DonationPageState createState() => _DonationPageState();
+  _DonationPageDriveState createState() => _DonationPageDriveState();
 }
 
-class _DonationPageState extends State<DonationPage> {
+class _DonationPageDriveState extends State<DonationPageDrive> {
   List<DonationCategory> _selectedCategories = [];
   PickupType _selectedPickupType = PickupType.Pickup;
   TextEditingController _weightController = TextEditingController();
@@ -32,8 +31,8 @@ class _DonationPageState extends State<DonationPage> {
     super.initState();
 
     // Set initial value of receiverController if receiverEmail is not null
-    if (widget.receiverEmail != null) {
-      _receiverController.text = widget.receiverEmail;
+    if (widget.driveName != null) {
+      _driveNameController.text = widget.driveName;
     }
   }
 
@@ -244,27 +243,36 @@ class _DonationPageState extends State<DonationPage> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Create a Donation object with the entered data
-                Donation donation = Donation(
-                  categories: _selectedCategories,
-                  pickupType: _selectedPickupType,
-                  weight: double.parse(_weightController.text),
-                  dateTime: _selectedDateTime ?? DateTime.now(),
-                  address: _addressController.text,
-                  contactNumber: _contactNumberController.text,
-                  receiver: _receiverController.text,
-                  sender: _senderController.text,
-                  isCancelled: _isCancelled,
-                  driveName: _driveNameController
-                      .text, // Include driveName in the Donation object
-                );
+                if (_selectedCategories.isEmpty ||
+                    _weightController.text.isEmpty ||
+                    _selectedDateTime == null ||
+                    (_selectedPickupType == PickupType.Pickup &&
+                        (_addressController.text.isEmpty ||
+                            _contactNumberController.text.isEmpty)) ||
+                    _receiverController.text.isEmpty ||
+                    _senderController.text.isEmpty ||
+                    _driveNameController.text.isEmpty) {
+                  _showMessage('Please fill in all fields');
+                } else {
+                  Donation donation = Donation(
+                    categories: _selectedCategories,
+                    pickupType: _selectedPickupType,
+                    weight: double.parse(_weightController.text),
+                    dateTime: _selectedDateTime!,
+                    address: _addressController.text,
+                    contactNumber: _contactNumberController.text,
+                    receiver: _receiverController.text,
+                    sender: _senderController.text,
+                    isCancelled: _isCancelled,
+                    driveName: _driveNameController.text,
+                  );
 
-                // Save the donation to Firestore
-                saveDonationToFirestore(donation).then((value) {
-                  _showMessage('Donation created successfully');
-                  Navigator.pushReplacementNamed(context, '/donated');
-                }).catchError(
-                    (error) => _showMessage('Error creating donation: $error'));
+                  saveDonationToFirestore(donation).then((value) {
+                    _showMessage('Donation created successfully');
+                    Navigator.pushReplacementNamed(context, '/donated');
+                  }).catchError((error) =>
+                      _showMessage('Error creating donation: $error'));
+                }
               },
               child: Text('Create Donation'),
             ),

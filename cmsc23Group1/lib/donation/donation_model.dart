@@ -12,8 +12,9 @@ class Donation {
   String? contactNumber;
   String? qrCode;
   String? status;
-  String? receiver; // Add this field
-  String? sender; // Add this field
+  String? receiver;
+  String? sender;
+  String? driveName; // Add this field
 
   Donation({
     this.id,
@@ -26,8 +27,9 @@ class Donation {
     required this.pickupDropoffTime,
     required this.status,
     this.qrCode,
-    this.receiver, // Add this field
-    this.sender, // Add this field
+    this.receiver,
+    this.sender,
+    this.driveName, // Add this field
   });
 
   Donation.emptyDonation() {
@@ -40,8 +42,9 @@ class Donation {
     contactNumber = null;
     pickupDropoffTime = DateTime.now();
     status = null;
-    receiver = null; // Add this field
-    sender = null; // Add this field
+    receiver = null;
+    sender = null;
+    driveName = null; // Initialize the driveName field
   }
 
   factory Donation.fromJson(Map<String, dynamic> json) {
@@ -56,8 +59,9 @@ class Donation {
       contactNumber: json['contactNumber'],
       qrCode: json['qrCode'],
       status: json['status'],
-      receiver: json['receiver'], // Add this field
-      sender: json['sender'], // Add this field
+      receiver: json['receiver'],
+      sender: json['sender'],
+      driveName: json['driveName'], // Add this field
     );
   }
 
@@ -66,20 +70,22 @@ class Donation {
     return data.map<Donation>((dynamic d) => Donation.fromJson(d)).toList();
   }
 
-  Map<String, dynamic> toJson(Donation donation) {
+  Map<String, dynamic> toJson() {
+    // Modify toJson method to remove donation parameter
     return {
-      "id": donation.id,
-      "category": donation.category,
-      "isForPickup": donation.isForPickup,
-      "weight": donation.weight,
-      "imageUrl": donation.imageUrl,
-      "pickupDropoffTime": donation.pickupDropoffTime,
-      "addressesForPickup": donation.addressesForPickup,
-      "contactNumber": donation.contactNumber,
-      "qrCode": donation.qrCode,
-      "status": donation.status,
-      "receiver": donation.receiver,
-      "sender": donation.sender,
+      "id": id,
+      "category": category,
+      "isForPickup": isForPickup,
+      "weight": weight,
+      "imageUrl": imageUrl,
+      "pickupDropoffTime": pickupDropoffTime,
+      "addressesForPickup": addressesForPickup,
+      "contactNumber": contactNumber,
+      "qrCode": qrCode,
+      "status": status,
+      "receiver": receiver,
+      "sender": sender,
+      "driveName": driveName, // Add this field
     };
   }
 }

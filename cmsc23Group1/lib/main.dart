@@ -20,6 +20,9 @@ import 'package:week9/screens/admin/admin_donations.dart';
 import 'package:week9/screens/admin/admin_donors.dart';
 import 'package:week9/screens/admin/admin_organizations.dart';
 import 'package:week9/screens/admin/admin_approve.dart';
+import 'package:week9/screens/donors/donor_drive.dart';
+import 'package:week9/screens/donation_page_drive.dart';
+import 'package:week9/screens/donors/drive_details_page.dart' as DriveDetails;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +57,16 @@ class MyApp extends StatelessWidget {
               ModalRoute.of(context)!.settings.arguments as String;
           return DonationPage(receiverEmail: receiverEmail);
         },
+        '/donationPageDrive': (context) {
+          final String driveName =
+              ModalRoute.of(context)!.settings.arguments as String;
+          return DonationPageDrive(driveName: driveName);
+        },
+        '/drive_details': (context) {
+          final String driveName =
+              ModalRoute.of(context)!.settings.arguments as String;
+          return DriveDetails.DriveDetailsPage(driveName: driveName);
+        },
         '/donation': (context) => DonationDetailsPage(),
         '/donationDrive': (context) => DonationDrivePage(),
         '/donor_home': (context) => HomePage(),
@@ -61,6 +74,7 @@ class MyApp extends StatelessWidget {
         '/organization_home': (context) => OrgHomePage(),
         '/donor_profile': (context) => ProfilePage(),
         '/donated': (context) => DonationSentPage(),
+        '/donor_drive': (context) => DonationDrivesPage(),
         '/user_profile': (context) => UserProfilePage(),
         '/admin_home': (context) => AdminHomePage(),
         '/admin_donations': (context) => AdminAllDonationsPage(),

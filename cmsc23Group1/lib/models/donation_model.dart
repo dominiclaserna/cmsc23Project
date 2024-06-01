@@ -33,6 +33,7 @@ class Donation {
   final String? receiver; // Receiver of the donation
   final String? sender; // Sender of the donation
   final DonationStatus status; // Status of the donation
+  final String driveName; // Name of the donation drive
   bool isCancelled;
 
   Donation({
@@ -48,5 +49,6 @@ class Donation {
     this.sender,
     this.status = DonationStatus.Pending, // Default status is Pending
     this.isCancelled = false,
+    required this.driveName, // Adding driveName as a required parameter
   });
 }

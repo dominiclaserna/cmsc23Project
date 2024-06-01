@@ -1,15 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:week9/models/donation_model.dart';
 
-void saveDonationToFirestore(Donation donation) async {
+Future<void> saveDonationToFirestore(Donation donation) async {
   try {
-    // Access the Firestore instance
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    // Get a reference to the donations collection
     CollectionReference donations = firestore.collection('donations');
 
-    // Add a new document to the donations collection
     await donations.add({
       'categories': donation.categories
           .map((category) => category.toString().split('.').last)
@@ -22,14 +18,18 @@ void saveDonationToFirestore(Donation donation) async {
       'isCancelled': donation.isCancelled,
       'receiver': donation.receiver,
       'sender': donation.sender,
+      'driveName': donation.driveName,
       'status': "Pending",
     });
 
-    // Display a success message
     print('Donation saved to Firestore');
+
+    // Return a Future indicating success
+    return Future.value();
   } catch (e) {
-    // Handle errors
     print('Error saving donation: $e');
+    // Throw an exception to indicate failure
+    throw e;
   }
 }
 
@@ -41,7 +41,15 @@ Future<void> updateDonationStatusInFirestore(
         .doc(donationId)
         .update({'status': newStatus});
     print('Donation status updated to $newStatus');
+
+    // Update status in the app
+    updateAppStatus('Donation status updated successfully');
   } catch (e) {
     print('Error updating donation status: $e');
   }
+}
+
+void updateAppStatus(String status) {
+  // Update status in the app UI or trigger a notification
+  print('App status: $status');
 }

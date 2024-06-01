@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:week9/screens/donation_page.dart';
+import 'package:week9/screens/donation_page_drive.dart'; // Adjusted import
 import 'package:week9/main.dart'; // Import the CustomAppBar from main.dart
 
-class UserDetailsPage extends StatelessWidget {
-  final String email;
+class DriveDetailsPage extends StatelessWidget {
+  final String driveName;
 
-  UserDetailsPage({required this.email});
+  DriveDetailsPage({required this.driveName});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,8 @@ class UserDetailsPage extends StatelessWidget {
       appBar: CustomAppBar(),
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance
-            .collection('users')
-            .where('email', isEqualTo: email)
+            .collection('donationDrives')
+            .where('driveName', isEqualTo: driveName)
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -27,23 +27,23 @@ class UserDetailsPage extends StatelessWidget {
           }
 
           if (snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('User not found.'));
+            return Center(child: Text('Drive not found.'));
           }
 
-          var userData =
+          var driveData =
               snapshot.data!.docs.first.data() as Map<String, dynamic>;
 
-          return UserDetailsWidget(userData: userData);
+          return DriveDetailsWidget(driveData: driveData);
         },
       ),
     );
   }
 }
 
-class UserDetailsWidget extends StatelessWidget {
-  final Map<String, dynamic> userData;
+class DriveDetailsWidget extends StatelessWidget {
+  final Map<String, dynamic> driveData;
 
-  UserDetailsWidget({required this.userData});
+  DriveDetailsWidget({required this.driveData});
 
   @override
   Widget build(BuildContext context) {
@@ -53,28 +53,26 @@ class UserDetailsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'OrgName: ${userData['orgName'] ?? 'Not available'}',
+            'Drive Name: ${driveData['driveName'] ?? 'Not available'}',
             style: TextStyle(fontSize: 18),
           ),
           SizedBox(height: 10),
           Text(
-            'First Name: ${userData['firstName'] ?? 'Not available'}',
-            style: TextStyle(fontSize: 18),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Last Name: ${userData['lastName'] ?? 'Not available'}',
+            'Owner: ${driveData['owner'] ?? 'Not available'}',
             style: TextStyle(fontSize: 18),
           ),
           SizedBox(
-              height: 20), // Add some space between user details and button
+            height: 20,
+          ), // Add some space between drive details and button
           ElevatedButton(
             onPressed: () {
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      DonationPage(receiverEmail: userData['email']),
+                  builder: (context) => DonationPageDrive(
+                    driveName: driveData['driveName'], // Pass driveName
+                  ),
                 ),
               );
             },

@@ -1,22 +1,6 @@
-// lib/providers/form_provider.dart
-// ignore_for_file: avoid_print
-
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:week9/donation/firebase_donation_api.dart';
-import './donation_model.dart';
-
-// String? id;
-// List<String>? category;
-// bool? isForPickup;
-// Double? weight;
-// String? imageUrl;
-// DateTime? pickupDropoffTime;
-// List<String>? addressesForPickup;
-// String? contactNumber;
-// String? qrCode;
-// String? status;
+import 'donation_model.dart';
 
 class DonationFormProvider with ChangeNotifier {
   Donation _donationFormData = Donation.emptyDonation();
@@ -38,6 +22,8 @@ class DonationFormProvider with ChangeNotifier {
   List<String>? get addressesForPickup => _donationFormData.addressesForPickup;
   String? get receiver => _donationFormData.receiver;
   String? get sender => _donationFormData.sender;
+  String? get driveName =>
+      _donationFormData.driveName;
 
   void updateCategory(String category, bool isSelected) {
     if (isSelected) {
@@ -104,7 +90,11 @@ class DonationFormProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Add other update methods as needed
+  void updateDriveName(String? driveName) {
+    // Method to update driveName
+    _donationFormData.driveName = driveName;
+    notifyListeners();
+  }
 
   void resetForm() {
     print("Resetting the form data for donations.");
